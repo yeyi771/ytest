@@ -1,0 +1,207 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.yeyi.ytest</groupId>
+  <artifactId>ytest</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  
+	<properties>
+		<version.springframework>3.1.2.RELEASE</version.springframework>
+	</properties>
+	
+	<dependencies>
+		<!-- for org.springframework.stereotype.Controller and org.springframework.web.bind.annotation.RequestMapping -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		
+		<!-- 访问mysql for NamedParameterJdbcTemplate -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		
+		<!-- for org.springframework.web.servlet.DispatcherServlet -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+
+		<!-- for javax.servlet.http.HttpServletRequest -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency> 
+		
+		<!-- for org.springframework.web.servlet.view.InternalResourceViewResolver -->
+		<!-- for org.codehaus.jackson.map.ObjectMapper -->
+		<!-- 为使用注解如 @ResponseBody -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		
+		
+		<!-- for @Inject (javax.inject.Inject) -->
+		<dependency>
+		    <groupId>com.springsource</groupId>  
+		    <artifactId>javax.inject</artifactId>
+		    <version>1.0.0</version>
+		</dependency>
+		
+		<!-- cxf config begin -->
+		<dependency>
+	        <groupId>javax.ws.rs</groupId>
+	        <artifactId>javax.ws.rs-api</artifactId>
+	        <version>2.0-m10</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+	        <version>2.7.3</version>
+	        <exclusions>
+	        	<exclusion>
+	        		<artifactId>cxf-rt-ws-policy</artifactId>
+	        		<groupId>org.apache.cxf</groupId>
+	        	</exclusion>
+	        </exclusions>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+	        <version>2.7.3</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-rs-extension-providers</artifactId>
+	        <version>2.7.3</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.cxf</groupId>
+	        <artifactId>cxf-rt-transports-http</artifactId>
+	        <version>2.7.3</version>
+	    </dependency>
+		<dependency>
+		    <groupId>org.codehaus.jettison</groupId>
+		    <artifactId>jettison</artifactId>
+		     <version>1.3.2</version>
+		</dependency>
+	    <dependency>
+	        <groupId>javax.ws.rs</groupId>
+	        <artifactId>jsr311-api</artifactId>
+	        <version>1.1.1</version>
+	    </dependency>
+		<!-- cxf config end -->
+		
+		<!-- XFire https://mvnrepository.com/artifact/org.codehaus.xfire/xfire-aegis -->
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-aegis</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-annotations</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-core</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-java5</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.codehaus.xfire</groupId>
+		    <artifactId>xfire-jaxws</artifactId>
+		    <version>1.2.6</version>
+		</dependency>
+ 
+		<dependency>
+		    <groupId>org.glassfish.jaxb</groupId>
+		    <artifactId>jaxb-xjc</artifactId>
+		    <version>2.2.11</version>
+		</dependency>
+ 
+		<dependency>
+		    <groupId>com.sun.xml.bind</groupId>
+		    <artifactId>jaxb-xjc</artifactId>
+		    <version>2.2.11</version>
+		</dependency>
+		
+		<!-- for org.apache.commons.lang.StringUtils -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.3</version>
+		</dependency>
+		
+<!-- 
+<dependency>
+    <groupId>xfire</groupId>
+    <artifactId>xfire-jsr181-api</artifactId>
+    <version>1.0-M1</version>
+</dependency>
+ -->
+ 		<!-- 访问mysql for Cannot load JDBC driver class 'com.mysql.jdbc.Driver' -->
+ 		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.22</version>
+		</dependency>
+		
+		<!-- autoproxy 事务回滚要用到-->
+	    <dependency>
+	    	<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
+		</dependency>
+		
+		<!-- 标签 <aop:config> 要用到
+		<dependency>
+            <groupId>org.aspectj </groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        -->
+        <!-- for net.sf.json.JSONObject -->
+        <dependency>
+		  <groupId>net.sf.json-lib</groupId>
+		  <artifactId>json-lib</artifactId>
+		  <version>2.1</version>
+		</dependency>
+
+	</dependencies>
+
+</project>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/core" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+        http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+        http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+                      
+    <!-- 用 @Transactional 控制事务时需要定义 ,默认使用名为 transactionManager 的事务管理器 -->
+    <!-- 否则应该用 transaction-manager="XXX" 来表示
+	<tx:annotation-driven />
+	 -->
+           
+        <!-- data source settings -->
+         <!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		    <property name="jndiName">
+		      <value>java:comp/env/jdbc/sgint</value>
+		    </property>
+	  	</bean>   -->
+
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		    <property name="driverClassName" value="com.mysql.jdbc.Driver" />      
+    		<property name="url" value="jdbc:mysql://192.168.5.117:3307/sit110?characterEncoding=utf-8" />      
+    		<property name="username" value="root" />      
+    		<property name="password" value="123456" />
+	  	</bean>  
+		
+		
+		<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+			<!-- 将上面声明的 dataSource 注入到下面-->
+			<constructor-arg ref="dataSource" />
+		</bean>
+		
+		<!-- 声明事务管理器,表示 DataSourceTransactionManager 将使用 dataSource(也即NamedParameterJdbcTemplate) -->
+		<!-- 中的 Connection 的 commit() rollback() 等方法 -->
+		<bean id="transactionManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+    		<property name="dataSource" ref="dataSource" />  
+		</bean>
+		
+		<!-- 设置 autoproxy 中方法读写特性, 必须要加入这一项，否则事务不生效 -->
+		<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"> 
+		   <property name="transactionManager">
+		      <ref bean="transactionManager" />
+		   </property> 
+		   <property name="transactionAttributes">
+		    <props>
+		     <prop key="find*">PROPAGATION_SUPPORTS,readOnly</prop>
+		     <prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+		     <prop key="load*">PROPAGATION_SUPPORTS,readOnly</prop>
+		     <prop key="query*">PROPAGATION_SUPPORTS,readOnly</prop>
+		     <prop key="is*">PROPAGATION_SUPPORTS,readOnly</prop>
+		     <prop key="has*">PROPAGATION_SUPPORTS,readOnly</prop>
+		     <prop key="exist*">PROPAGATION_SUPPORTS,readOnly</prop>
+		     <prop key="check*">PROPAGATION_SUPPORTS,readOnly</prop>
+		     <!-- 父类异常（字符串）符合Exception的都回滚，负号表示会回滚，+号表示照样提交。 -->
+		     <!-- 这里还可以写多个指定异常，用逗号隔开 -->
+		     <prop key="*">PROPAGATION_REQUIRED,-Exception</prop>
+		    </props>
+		   </property>
+		</bean>
+		
+		<!-- 使过滤到的类名(*Service、*ServiceImpl，注意不是函数名)自动加入事务，有异常则回滚不提交数据库修改 -->
+		<bean id="autoproxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		   <property name="beanNames">
+		    <list>
+		     <value>*Service</value>
+		     <value>*ServiceImpl</value>  
+		    </list>
+		   </property>
+		   <!-- 将上面的设置 transactionInterceptor 加进来-->
+		   <property name="interceptorNames">
+		    <list>
+		        <value>transactionInterceptor</value>
+		    </list>
+		   </property>
+		</bean>
+		
+		<!-- 配置那些类、方法纳入到事务的管理，目前发现没用
+		<aop:config>
+			<aop:pointcut expression="execution(* com.yeyi.ytest.DataBase.service.DBSer.*.*(..))" id="txPointcut"/>
+			<aop:advisor advice-ref="transactionInterceptor" pointcut-ref="txPointcut" />
+		</aop:config>
+		 -->
+
+</beans>

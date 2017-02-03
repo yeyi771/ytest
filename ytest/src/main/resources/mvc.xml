@@ -14,13 +14,8 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-	
-	<!-- 启用spring mvc 注解 -->
-	<context:annotation-config />
 
-	<!-- 设置使用注解的类所在的jar包 -->
-	<!-- <context:component-scan base-package="com" /> -->
-	<context:component-scan base-package="com.yeyi.ytest" />
+	<!-- 此文件主要为了让 json 与 xml 能自动转换(但方式已经过时了) -->
 
 	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
 
@@ -50,8 +45,9 @@
 		</property>
 	</bean>
 
-	<bean
-		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	<!-- AnnotationMethodHandlerAdapter 其实已经过时，应该用 -->
+	<!-- org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter 代替 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<list>
 				<ref bean="jsonConverter" />

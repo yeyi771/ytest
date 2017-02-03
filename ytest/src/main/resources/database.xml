@@ -20,14 +20,14 @@
 	<tx:annotation-driven />
 	 -->
            
-        <!-- data source settings -->
-         <!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <!-- tomcat 配置数据库方式 -->
+         <!-- <bean id="dataSourceId" class="org.springframework.jndi.JndiObjectFactoryBean">
 		    <property name="jndiName">
 		      <value>java:comp/env/jdbc/sgint</value>
 		    </property>
 	  	</bean>   -->
 
-		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<bean id="dataSourceId" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		    <property name="driverClassName" value="com.mysql.jdbc.Driver" />      
     		<property name="url" value="jdbc:mysql://192.168.5.117:3307/sit110?characterEncoding=utf-8" />      
     		<property name="username" value="root" />      
@@ -36,14 +36,14 @@
 		
 		
 		<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-			<!-- 将上面声明的 dataSource 注入到下面-->
-			<constructor-arg ref="dataSource" />
+			<!-- 将上面声明的 dataSourceId 注入到下面-->
+			<constructor-arg ref="dataSourceId" />
 		</bean>
 		
-		<!-- 声明事务管理器,表示 DataSourceTransactionManager 将使用 dataSource(也即NamedParameterJdbcTemplate) -->
+		<!-- 声明事务管理器,表示 DataSourceTransactionManager 将使用 dataSourceId(也即NamedParameterJdbcTemplate) -->
 		<!-- 中的 Connection 的 commit() rollback() 等方法 -->
 		<bean id="transactionManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-    		<property name="dataSource" ref="dataSource" />  
+    		<property name="dataSource" ref="dataSourceId" />  
 		</bean>
 		
 		<!-- 设置 autoproxy 中方法读写特性, 必须要加入这一项，否则事务不生效 -->

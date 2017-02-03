@@ -6,7 +6,7 @@
   <packaging>war</packaging>
   
 	<properties>
-		<version.springframework>3.1.2.RELEASE</version.springframework>
+		<version.springframework>4.0.2.RELEASE</version.springframework>
 	</properties>
 	
 	<dependencies>
@@ -39,6 +39,19 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>${version.springframework}</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb-->
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-mongodb</artifactId>
+		    <version>1.5.0.RELEASE</version>
+		</dependency>
+ 		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
 			<version>${version.springframework}</version>
 		</dependency>
 
@@ -203,5 +216,103 @@
 		</dependency>
 
 	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<deploy>local</deploy>
+				<service_api_version>0.0.1-local-SNAPSHOT</service_api_version>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<deploy>dev</deploy>
+				<service_api_version>0.0.1-dev-SNAPSHOT</service_api_version>
+			</properties>
+		</profile>
+		<profile>
+			<id>sit</id>
+			<properties>
+				<deploy>sit</deploy>
+				<service_api_version>0.0.1-sit-SNAPSHOT</service_api_version>
+
+			</properties>
+		</profile>
+		<profile>
+			<id>preprd</id>
+			<properties>
+				<deploy>preprd</deploy>
+				<service_api_version>0.0.1-preprd-RELEASE</service_api_version>
+			</properties>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<deploy>prd</deploy>
+				<service_api_version>0.0.1-prd-RELEASE</service_api_version>
+			</properties>
+		</profile>
+		<profile>
+			<id>pfm</id>
+			<properties>
+				<deploy>pfm</deploy>
+				<service_api_version>0.0.1-pfm-SNAPSHOT</service_api_version>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<build>
+		<plugins>
+			<!-- 解决 dynamic web module version 问题。每次maven update project 后，jre版本不会跳回1.5 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-prod-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<!-- this is important -->
+							<overwrite>true</overwrite>
+							<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+							<outputDirectory>${basedir}/src/main/webapp/WEB-INF/classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<includes>
+										<include>*.properties</include>
+										<include>*.xml</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>deploy/${deploy}</directory>
+									<targetPath>${basedir}/src/main/webapp/WEB-INF/classes</targetPath>
+								</resource>
+							</resources>
+							<testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+							<testOutputDirectory>target/test-classes</testOutputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

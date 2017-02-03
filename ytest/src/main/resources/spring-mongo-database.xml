@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd    
+            http://www.springframework.org/schema/data/mongo  
+           http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+ 
+	<bean id="mappingContext"
+		class="org.springframework.data.mongodb.core.mapping.MongoMappingContext" />
+	<!-- 去掉mongo保存时的_class字段 -->
+	<bean id="defaultMongoTypeMapper"
+		class="org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper">
+		<constructor-arg name="typeKey">
+			<null /><!-- 这里设置为空,可以把 spring data mongodb 多余保存的_class字段去掉 -->
+		</constructor-arg>
+	</bean>
+
+	<!-- common mongo -->
+	<mongo:mongo id="common_mongo" replica-set="${mongo.common.host}">
+		<!-- 一些连接属性的设置 -->
+		<mongo:options connections-per-host="${mongo.common.connectionsPerHost}"
+			threads-allowed-to-block-for-connection-multiplier="${mongo.common.threadsAllowedToBlockForConnectionMultiplier}"
+			connect-timeout="${mongo.common.connectTimeout}" max-wait-time="${mongo.common.maxWaitTime}"
+			auto-connect-retry="${mongo.common.autoConnectRetry}"
+			socket-keep-alive="${mongo.common.socketKeepAlive}" socket-timeout="${mongo.common.socketTimeout}"
+			write-number="1" write-timeout="0" write-fsync="true" />
+	</mongo:mongo>
+
+	<mongo:db-factory id="common_mongoDbFactory" dbname="${mongo.common.db}"
+		mongo-ref="common_mongo" />
+	<!-- 配置mongodb映射类型 -->
+	<bean id="commonMappingMongoConverter"
+		class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+		<constructor-arg name="mongoDbFactory" ref="common_mongoDbFactory" />
+		<constructor-arg name="mappingContext" ref="mappingContext" />
+		<property name="typeMapper" ref="defaultMongoTypeMapper" />
+	</bean>
+	<!-- Spring提供的mongodb操作模板 -->
+	<bean id="commonMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="common_mongoDbFactory" />
+		<constructor-arg name="mongoConverter" ref="commonMappingMongoConverter" />
+	</bean>
+</beans>

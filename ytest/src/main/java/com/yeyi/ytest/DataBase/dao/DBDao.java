@@ -15,7 +15,7 @@ import com.yeyi.ytest.DataBase.model.Track;
 @Repository
 public class DBDao {
 	@Autowired
-	//@Qualifier("namedParameterJdbcTemplate") 自测不用写这个也是可以的
+	@Qualifier("namedParameterJdbcTemplate") //自测不用写这个也是可以的
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	public Track getTrackById(String id){

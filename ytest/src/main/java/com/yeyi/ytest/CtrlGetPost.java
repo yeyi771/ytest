@@ -40,6 +40,19 @@ public class CtrlGetPost {
 		return "get3: id = " + id;
 	}
 	
+	@RequestMapping("/getReDirect/{id}")
+	public @ResponseBody String getReDirect(HttpServletResponse response, @PathVariable("id") int id) {
+		String result = "getReDirect";
+		try {
+//			response.sendRedirect("../get3/"+id);	// 相对当前路径
+			response.sendRedirect("/ytest/rest/CtrlGetPost/get3/"+id);	// 绝对路径，从服务器地址开始
+		} catch (IOException e) {
+			e.printStackTrace();
+			result += (" err: " + e.getMessage());
+		}
+		return result;
+	}
+	
 	@RequestMapping("/get4")	// 自测如果类上的 @RequestMapping("/") 则这里可以不用 /也可以用
 	public @ResponseBody String Get4(int id) {// 不加 @ResponseBody 将默认返回XXX.jsp 页面的名称，不存在则出错
 		return "id = "+id;
@@ -59,6 +72,20 @@ public class CtrlGetPost {
 	public @ResponseBody String Post1(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "para", defaultValue = "{}") String para) throws IOException {
 		return "get: " + para;
+	}
+	
+	@RequestMapping(value = "/postRedirect", method = RequestMethod.POST)
+	public @ResponseBody String PostRedirect(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "para", defaultValue = "{}") String para) throws IOException {
+		String result = "getReDirect";
+		try {
+			response.sendRedirect("../post1");	// post 的参数无法传到重定向中,那重定向的接口不能是POST
+//			response.sendRedirect("../get1");
+		} catch (IOException e) {
+			e.printStackTrace();
+			result += (" err: " + e.getMessage());
+		}
+		return result;
 	}
 	
 	// 通过传入 json 来共用同一个接口

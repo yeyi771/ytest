@@ -19,6 +19,7 @@ public class CxfCtrl {
 	@RequestMapping("/get1")	// 自测如果类上的 @RequestMapping("/") 则这里可以不用 /也可以用
 	public @ResponseBody String Get1(HttpServletRequest request) throws Exception {// 不加 @ResponseBody 将默认返回XXX.jsp 页面的名称，不存在则出错
 		String id = request.getParameter("id");
-		return cfxService.GetServiceById(id);
+		return id;
+//		return cfxService.GetServiceById(id);
 	}
 }

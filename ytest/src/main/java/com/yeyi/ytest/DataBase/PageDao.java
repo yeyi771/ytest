@@ -76,12 +76,12 @@ public class PageDao <T> {
 		// else
 		
 		String sql = "WHERE ";
-		Iterator entries = whereMap.entrySet().iterator();
-		Map.Entry entry2 = (Map.Entry) entries.next();
+		Iterator<Map.Entry<String,Object>> entries = whereMap.entrySet().iterator();
+		Map.Entry<String,Object> entry2 = (Map.Entry<String,Object>) entries.next();
 		sql += (entry2.getKey() + "=" + " :" + entry2.getKey());	// 注意这里前后都用的 key
 	    
 		while(entries.hasNext()){
-			Map.Entry entry = (Map.Entry) entries.next();
+			Map.Entry<String,Object> entry = (Map.Entry<String,Object>) entries.next();
 			sql += (" AND " + entry.getKey() + "=" + " :" + entry.getKey()); 
 		}
 		

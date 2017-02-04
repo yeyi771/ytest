@@ -1,12 +1,8 @@
 package com.yeyi.ytest.XFire_;
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;  
 
-import org.codehaus.xfire.XFire;  
-import org.codehaus.xfire.client.XFireProxyFactory;  
-import org.codehaus.xfire.service.Service;  
-import org.codehaus.xfire.service.binding.ObjectServiceFactory;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;  

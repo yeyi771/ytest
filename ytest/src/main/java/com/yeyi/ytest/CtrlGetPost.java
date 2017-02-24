@@ -131,6 +131,34 @@ public class CtrlGetPost {
 //		return ""+bool+"\n"+bool2+"\n"+bool3+"\n"+bool4+"\n"+bool5+"\n"+bool6;
 //	}
 	
+	enum TEnum{
+		ENUM1{
+			@Override
+			public void print() {
+				System.out.println(ENUM1.name());
+			}
+		},
+		ENUM2{
+			@Override
+			public void print() {
+				System.out.println(ENUM2.name());
+			}
+		};
+		
+		private TEnum() {}
+		private TEnum(String s) {
+			
+		}
+		
+		public abstract void print();
+	}
+	// 事实证明，枚举不能作为参数
+	@RequestMapping(value = "/postEnum", method = RequestMethod.POST)
+	public @ResponseBody String PostEnum(TEnum te) throws IOException {
+		te.print();
+		return "enum: "+te.name();
+	}
+	
 	private Map<String, Object> PostSwitch(Map<String, String> params, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();

@@ -1,12 +1,21 @@
 package com.yeyi.ytest.DataBase.model;
 
 public class Track {
+	private int id;
 	private String jid;
 	private String lastVisit;
 	private String fromType;
 	private String fromId;
 	private String uploaderJid;
 	
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getUploaderJid() {
 		return uploaderJid;
 	}

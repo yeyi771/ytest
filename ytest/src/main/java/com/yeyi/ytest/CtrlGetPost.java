@@ -27,7 +27,8 @@ public class CtrlGetPost {
 	@RequestMapping("/get1")	// 自测如果类上的 @RequestMapping("/") 则这里可以不用 /也可以用
 	public @ResponseBody String Get1(HttpServletRequest request) {// 不加 @ResponseBody 将默认返回XXX.jsp 页面的名称，不存在则出错
 		String id = request.getParameter("id");
-		return "id = "+id;
+		String token = request.getParameter("token");
+		return "id = "+id+"\ntoken = "+token;
 	}
 
 	@RequestMapping(value="/get2",method = RequestMethod.GET)
@@ -46,6 +47,20 @@ public class CtrlGetPost {
 		try {
 //			response.sendRedirect("../get3/"+id);	// 相对当前路径
 			response.sendRedirect("/ytest/rest/CtrlGetPost/get3/"+id);	// 绝对路径，从服务器地址开始
+		} catch (IOException e) {
+			e.printStackTrace();
+			result += (" err: " + e.getMessage());
+		}
+		return result;
+	}
+	
+	@RequestMapping("/getReDirectOuter/{id}")
+	public @ResponseBody String getReDirectOuter(HttpServletResponse response, @PathVariable("id") int id) {
+		String result = "getReDirectOuter";
+		try {
+			// 注意这样写会变成相对地址： /getReDirectOuter/www.hao123.com
+//			response.sendRedirect("www.hao123.com");
+			response.sendRedirect("http://www.hao123.com");	// 绝对路径，从服务器地址开始
 		} catch (IOException e) {
 			e.printStackTrace();
 			result += (" err: " + e.getMessage());

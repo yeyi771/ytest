@@ -3,7 +3,6 @@ package com.yeyi.YTool;
 import java.io.IOException;
 import java.util.*;
 
-import org.apache.commons.lang.StringUtils; 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -16,14 +15,6 @@ import net.sf.json.JsonConfig;
 // json 转对象
 // http://www.iteye.com/problems/48573
 public class JsonUtil {     
-    
-    /**页面传至后台时，json数据在request的参数名称*/    
-    public final static String JSON_ATTRIBUTE = "json";     
-    public final static String JSON_ATTRIBUTE1 = "json1";     
-    public final static String JSON_ATTRIBUTE2 = "json2";     
-    public final static String JSON_ATTRIBUTE3 = "json3";     
-    public final static String JSON_ATTRIBUTE4 = "json4";
-    
     /** 从字符串读成对象
 	 * @param <T>
 	 * @param str
@@ -32,7 +23,7 @@ public class JsonUtil {
 	 */
 	public static <T> T fromJson(String str,Class<T> cls){
 		T r = null;
-		if(StringUtils.isNotEmpty(str)){
+		if(StringUtil.isNotEmpty(str)){
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			try {
@@ -165,11 +156,11 @@ public class JsonUtil {
      * @param object   
      * @return   
      */    
-    public static Map getMapFromJson(String jsonString) {     
+    public static Map<String,Object> getMapFromJson(String jsonString) {     
         setDataFormat2JAVA();     
         JSONObject jsonObject = JSONObject.fromObject(jsonString);     
-        Map map = new HashMap();     
-        for(Iterator iter = jsonObject.keys(); iter.hasNext();){     
+        Map<String,Object> map = new HashMap<>();     
+        for(Iterator<String> iter = jsonObject.keys(); iter.hasNext();){     
             String key = (String)iter.next();     
             map.put(key, jsonObject.get(key));     
         }     
@@ -196,11 +187,11 @@ public class JsonUtil {
      * @param object   
      * @return   
      */    
-    public static String getJSONString(Object object) throws Exception{     
+    public static String getJSONString(Object object) {     
         String jsonString = null;     
         //日期值处理器     
         JsonConfig jsonConfig = new JsonConfig();     
-        jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateValueProcessor());     
+//        jsonConfig.registerJsonValueProcessor(java.util.Date.class, new JsonDateValueProcessor());     
         if(object != null){     
             if(object instanceof Collection || object instanceof Object[]){     
                 jsonString = JSONArray.fromObject(object, jsonConfig).toString();     

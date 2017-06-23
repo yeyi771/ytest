@@ -28,7 +28,7 @@ public class HandlerInterceptor implements org.springframework.web.servlet.Handl
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		init(request, response, handler);
 		
-		request.setAttribute(InterceptorUtil.IS_MICRO_BROWSER, isMicroMsgBrowser(request));
+		request.setAttribute(WhiteList.IS_MICRO_BROWSER, isMicroMsgBrowser(request));
 		
 		return filter(request, response, handler);
 	}
@@ -46,7 +46,7 @@ public class HandlerInterceptor implements org.springframework.web.servlet.Handl
 	}
 
 	public void init(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		printLog(request,handler);
+		InterceptorUtil.printLog(request,handler);
 	}
 
 	public void destoryContextThread() {
@@ -118,12 +118,12 @@ public class HandlerInterceptor implements org.springframework.web.servlet.Handl
 	}
 	
 	protected boolean isNeedCheckToken(HttpServletRequest request, HttpServletResponse response, Object handler){
-		Set<String> ignoreUri = InterceptorUtil.getIgnoreUriSet();
+		Set<String> ignoreUri = WhiteList.getIgnoreUriSet();
 		String url = request.getRequestURI();
 		if( ignoreUri.contains(url) )
 			return false;
 		
-		Set<String> ignoreClases = InterceptorUtil.getIgnoreClissSet(); 
+		Set<String> ignoreClases = WhiteList.getIgnoreClissSet(); 
 		String className = handler.getClass().getSimpleName();
 		if( ignoreClases.contains(className) )
 			return false;
@@ -138,67 +138,5 @@ public class HandlerInterceptor implements org.springframework.web.servlet.Handl
 //			return false;
 //		
 //		return accountService.refreshTokenTimeOutCustomer(token);
-	}
-	
-	private String getRequstAddress(HttpServletRequest request){
-		String result ="";
-		String reqMethod = request.getMethod();
-		if("POST".equalsIgnoreCase(reqMethod)){
-			result = request.getRequestURL() +"?"+ this.getAllPostParam(request);
-		}
-		if("GET".equalsIgnoreCase(reqMethod)){
-			result = request.getQueryString() != null ? 
-						request.getRequestURL().append("?").append(request.getQueryString()).toString() : 
-						request.getRequestURL().toString();
-		}
-		return result;
-	}
-	
-	private String getAllPostParam(HttpServletRequest request){
-		@SuppressWarnings("unchecked")
-		Map<String, String[]> postParam = request.getParameterMap();
-		String queryString = "";
-		for (String key : postParam.keySet()) {
-			if( "pwd".equals(key) ){ // 隐藏密码
-				queryString += key + "=" + "notPwd" + "&";
-			}
-			else{
-				String[] values = postParam.get(key);
-				for (int i = 0; i < values.length; i++) {
-					String value = values[i];
-					queryString += key + "=" + value + "&";
-				}
-			}
-		}
-		if(StringUtils.isNotEmpty(queryString)){
-			queryString = queryString.substring(0, queryString.length() - 1);
-		}
-		return queryString;
-	}
-	
-	private void printLog(HttpServletRequest request, Object handler){
-		@SuppressWarnings("unchecked")
-		Map<String, String[]> paramMap = request.getParameterMap();
-		int i = 1;
-		Iterator<String> iter = paramMap.keySet().iterator();
-		while (iter.hasNext()) {
-			Object key = iter.next();
-			Object value = paramMap.get(key);
-			if( "pwd".equals(key) ){	// 隐藏密码
-				value = "notPwd";
-			}
-			if(!"para".equals(key)) {
-				logger.info("param "+i+": {}-{}", key, value);
-				i = i + 1;
-			}
-		}
-		
-		try {
-			logger.info("Request Begin, URI:\r\n"+getRequstAddress(request)
-			+"\r\nController: "+handler.getClass().getName()+", Request Type: "+request.getMethod()+", Protocol: "+request.getScheme());
-		} catch (Exception e) {
-			logger.error("HandlerInterceptor err: "+e.toString());
-			e.printStackTrace();
-		}
 	}
 }

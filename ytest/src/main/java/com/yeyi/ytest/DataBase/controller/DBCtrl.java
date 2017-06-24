@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yeyi.ytest.DataBase.model.Track;
 import com.yeyi.ytest.DataBase.service.DBSer;
 import com.yeyi.ytest.DataBase.service.DBService;
+import com.yeyi.ytest.common.aop.WhiteList;
 
 // 1：标注此类是一个 bean, 然后就可以 @Autowired 其它 bean 了。
 // 2: 可以处理 MVC 过滤的 http 请求了。
@@ -34,6 +35,8 @@ public class DBCtrl {
 	@RequestMapping("/GetTrackById")	// 自测如果类上的 @RequestMapping("/") 则这里可以不用 /也可以用
 	public @ResponseBody Track GetTrackById(HttpServletRequest request) {// 不加 @ResponseBody 将默认返回XXX.jsp 页面的名称，不存在则出错
 		String id = request.getParameter("id");
+		String isMicro = request.getAttribute(WhiteList.IS_MICRO_BROWSER).toString();
+		System.out.println("IS_MICRO_BROWSER: "+isMicro);
 		Track track = testService.GetTrackById(id);
 		//track.setJid(null);	如果设置为 null 则 @ResponseBody 转成 json 时会忽略该项
 		return track; 

@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yeyi.YTool.JsonUtil;
+import com.yeyi.YTool.StringUtil;
 import com.yeyi.ytest.common.JsonResult;
 import com.yeyi.ytest.common.Status;
-import com.yeyi.ytest.util.StringUtil;
 
 
 public class HandlerInterceptor implements org.springframework.web.servlet.HandlerInterceptor {

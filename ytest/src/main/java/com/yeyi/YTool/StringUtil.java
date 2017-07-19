@@ -130,15 +130,26 @@ public class StringUtil {
         return idList;
     }
     
+    /**
+     * 过滤掉转义字符(\r\n\t)
+     * @return
+     */
+    public static String escapeCharacterFilter(String str){
+        return str.replaceAll("\\s*", "");
+    }
+    
     public static void main(String[] args) {
 //        String string = "camelcase2Underscore";
 //        System.out.println(camelcase2Underscore(string));
         
-        String ss = "123,wq,哈哈";
-        List<String> sList = asList(ss);
-        System.out.println(sList);
-        ss = "12333,0,3";
-        List<Integer> iList = asIntegerList(ss);
-        System.out.println(iList);
+//        String ss = "123,wq,哈哈";
+//        List<String> sList = asList(ss);
+//        System.out.println(sList);
+//        ss = "12333,0,3";
+//        List<Integer> iList = asIntegerList(ss);
+//        System.out.println(iList);
+        
+        String string = "1322\r\nppp\t111";
+        System.out.println(escapeCharacterFilter(string));
     }
 }

@@ -1,5 +1,6 @@
 package com.yeyi.YTool;
 
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -138,6 +139,41 @@ public class StringUtil {
         return str.replaceAll("\\s*", "");
     }
     
+    /**
+     * https://zhidao.baidu.com/question/2142533412771114668.html
+     * 判断字符串 str 是否属于某种编码(encoding)
+     * @param str
+     * @param encoding "ISO-8859-1" "utf-8"
+     * @throws UnsupportedEncodingException 
+     */
+    public static boolean checkEncoding(String str, String encoding) throws UnsupportedEncodingException{
+        if( null==str )
+            return true;
+        
+        return str.equals(new String(str.getBytes(encoding), encoding));
+    }
+    
+    /** 7位ASCII字符，也叫作ISO646-US、Unicode字符集的基本拉丁块 */
+    public static final String US_ASCII = "US-ASCII";
+
+    /** ISO 拉丁字母表 No.1，也叫作 ISO-LATIN-1 */
+    public static final String ISO_8859_1 = "ISO-8859-1";
+
+    /** 8 位 UCS 转换格式 */
+    public static final String UTF_8 = "UTF-8";
+
+    /** 16 位 UCS 转换格式，Big Endian（最低地址存放高位字节）字节顺序 */
+    public static final String UTF_16BE = "UTF-16BE";
+
+    /** 16 位 UCS 转换格式，Little-endian（最高地址存放低位字节）字节顺序 */
+    public static final String UTF_16LE = "UTF-16LE";
+
+    /** 16 位 UCS 转换格式，字节顺序由可选的字节顺序标记来标识 */
+    public static final String UTF_16 = "UTF-16";
+
+    /** 中文超大字符集 */
+    public static final String GBK = "GBK";
+    
     public static void main(String[] args) {
 //        String string = "camelcase2Underscore";
 //        System.out.println(camelcase2Underscore(string));
@@ -149,7 +185,18 @@ public class StringUtil {
 //        List<Integer> iList = asIntegerList(ss);
 //        System.out.println(iList);
         
-        String string = "1322\r\nppp\t111";
-        System.out.println(escapeCharacterFilter(string));
+//        String string = "1322\r\nppp\t111";
+//        System.out.println(escapeCharacterFilter(string));
+        
+        String ss = "123,wq,哈哈";
+//        String encoding = US_ASCII;
+        String encoding = UTF_8;
+        try {
+            System.out.println(checkEncoding(ss, encoding));
+            System.out.println(checkEncoding("123", encoding));
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }

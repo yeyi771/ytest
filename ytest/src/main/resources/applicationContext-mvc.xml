@@ -44,6 +44,14 @@
 			<value type="org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion">NON_NULL</value>
 		</property>
 	</bean>
+	
+	<!-- make sure: MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request; -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="maxUploadSize" value="50000000"></property>
+		<property name="maxInMemorySize" value="4096"></property>
+	</bean>
 
 	<!-- AnnotationMethodHandlerAdapter 其实已经过时，应该用 -->
 	<!-- org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter 代替 -->

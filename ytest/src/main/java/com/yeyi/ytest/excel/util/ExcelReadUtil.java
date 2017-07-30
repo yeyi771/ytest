@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -21,6 +22,8 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.yeyi.YTool.NumberUtil;
 
 /**
  * 通过流对excel文件的读取操作
@@ -215,6 +218,8 @@ public class ExcelReadUtil
         {
             return null;
         }
+        
+        FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
         // 总行数
         int rows = sheet.getLastRowNum();
@@ -267,7 +272,7 @@ public class ExcelReadUtil
             Row row = sheet.getRow(i);
 
             // 空行检验
-            if (isBlankRow(row))
+            if (isBlankRow(row,evaluator))
             {
                 continue;
             }
@@ -332,7 +337,6 @@ public class ExcelReadUtil
     public synchronized static List<Map<String, Object>> parseExcel(Workbook workbook,
             String sheetName, Map<String, String> colNameMap)
     {
-
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Sheet sheet = workbook.getSheet(sheetName);
         // sheet名不存在
@@ -340,6 +344,8 @@ public class ExcelReadUtil
         {
             return null;
         }
+        
+        FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
         // 总行数
         int rows = sheet.getLastRowNum();
@@ -371,7 +377,7 @@ public class ExcelReadUtil
         for (int i = 1; i <= rows; i++)
         {
             Row row = sheet.getRow(i);
-            if (row == null || isBlankRow(row))
+            if (row == null || isBlankRow(row, evaluator))
             {
                 continue;
             }
@@ -380,7 +386,8 @@ public class ExcelReadUtil
 
             for (Entry<Integer, String> entry : colNumberAndKeyName.entrySet())
             {
-                Object value = getValue(row.getCell(entry.getKey()));
+            	Cell cell = row.getCell(entry.getKey());
+                Object value = getValue(cell.getCellType(), cell, evaluator);
                 dataMap.put(entry.getValue(), value);
             }
 
@@ -389,13 +396,12 @@ public class ExcelReadUtil
         return list;
     }
 
-    public static Object getValue(Cell cell)
+    public static Object getValue(int celType, Cell cell, FormulaEvaluator evaluator)
     {
         if (cell == null)
         {
             return "";
         }
-        int celType = cell.getCellType();
         switch (celType)
         {
         // 字符串类型
@@ -416,8 +422,8 @@ public class ExcelReadUtil
 
             // 计算公式
         case XSSFCell.CELL_TYPE_FORMULA:
-            String formulaVaule = cell.getCellFormula();
-            return formulaVaule;
+        	evaluator.evaluateFormulaCell(cell);
+            return getValue(cell.getCachedFormulaResultType(), cell, evaluator);
         default:
             break;
         }
@@ -431,7 +437,7 @@ public class ExcelReadUtil
      * @param row
      * @return
      */
-    public static boolean isBlankRow(Row row)
+    public static boolean isBlankRow(Row row, FormulaEvaluator evaluator)
     {
         if (row == null)
             return true;
@@ -454,7 +460,9 @@ public class ExcelReadUtil
                     value = String.valueOf(cell.getBooleanCellValue());
                     break;
                 case Cell.CELL_TYPE_FORMULA:
-                    value = String.valueOf(cell.getCellFormula());
+//                    value = String.valueOf(cell.getCellFormula());
+                	evaluator.evaluateFormulaCell(cell);
+                	value = String.valueOf(getValue(cell.getCachedFormulaResultType(), cell, evaluator));
                     break;
                 // case Cell.CELL_TYPE_BLANK:
                 // break;
@@ -490,6 +498,7 @@ public class ExcelReadUtil
             return null;
         }
         
+        FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
         
         // 总行数
         int rows = sheet.getLastRowNum();
@@ -508,9 +517,6 @@ public class ExcelReadUtil
 
         for (Map.Entry<String, String> entry : colNameMap.entrySet())
         {
-
-//            entry.getValue();
-            
             for (int i = 0; i < cols; i++)
             {
                 firstRow.getCell(i);
@@ -530,7 +536,7 @@ public class ExcelReadUtil
         for (int i = dataRowIndex; i <= rows; i++)
         {
             Row row = sheet.getRow(i);
-            if (row == null || isBlankRow(row))
+            if (row == null || isBlankRow(row,evaluator))
             {
                 continue;
             }
@@ -539,7 +545,12 @@ public class ExcelReadUtil
 
             for (Entry<Integer, String> entry : colNumberAndKeyName.entrySet())
             {
-                Object value = getValue(row.getCell(entry.getKey()));
+            	Cell cell = row.getCell(entry.getKey());
+                Object value = getValue(cell.getCellType(), cell, evaluator);
+                if( value instanceof Double ){ // 如果是整数就去掉小数部分
+                	if( NumberUtil.isInteger((Double)value) )
+                		value = new Integer(((Double)value).intValue());
+                }
                 dataMap.put(entry.getValue(), value);
             }
 
@@ -547,5 +558,4 @@ public class ExcelReadUtil
         }
         return list;
     }
-
 }

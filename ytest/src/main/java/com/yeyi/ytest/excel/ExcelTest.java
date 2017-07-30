@@ -54,10 +54,10 @@ public class ExcelTest {
 			for (Map<String, Object> map : list) {
 				System.out.println(map);
 			}
+			return list.toString();
 		} catch (IOException e) {
 //			logger.error("导入包裹错误，文件为:" + e.toString());
 			return "/homepage/import_pkg";
 		}
-		return ""; 
 	}
 }

@@ -102,10 +102,20 @@ public class StringUtil {
 	/**
      * 用逗号分隔的字符串转成数组
      */
-    public static List<String> asList(String ids) {
+	public static List<String> asList(String ids) {
+        return asList(ids,",");
+    }
+    
+    /**
+     * 拆分字符串
+     * @param ids 以同一个字符分隔开的字符串
+     * @param sign 分隔字符
+     * @return
+     */
+    public static List<String> asList(String ids, String sign) {
         List<String> idList = new LinkedList<String>();
         if (StringUtil.isNotEmpty(ids)) {
-            String idGroup[] = ids.split(",");
+            String idGroup[] = ids.split(sign);
             for (String id : idGroup) {
                 if(StringUtil.isNotEmpty(id)) {
                     idList.add(id.trim());

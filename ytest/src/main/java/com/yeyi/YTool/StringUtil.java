@@ -3,6 +3,7 @@ package com.yeyi.YTool;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class StringUtil {
 	public static boolean isEmpty(String str) {
@@ -147,6 +148,24 @@ public class StringUtil {
      */
     public static String escapeCharacterFilter(String str){
         return str.replaceAll("\\s*", "");
+    }
+    
+    /**
+     * 随机生成 num 位数字
+     * @param num
+     * @return
+     */
+    public static String getRandomNumber(int num){
+        if( num<=0 ) num = 4;
+        String randomStr = new String("");
+        int n[] = new int[num];
+        for (int i=0;i<n.length;i++){
+            n[i] = Math.abs(new Random().nextInt(10));
+            
+            randomStr = randomStr + String.valueOf(n[i]);
+        }
+        
+        return randomStr;
     }
     
     /**

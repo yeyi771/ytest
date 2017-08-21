@@ -1,5 +1,6 @@
 package com.yeyi.ytest.common.aop;
 
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -36,9 +37,10 @@ public class InterceptorUtil {
         
         try {
             logger.info("Request Begin, URI:\r\n"+getRequstAddress(request)
+            +"\r\n\r\nbody: "+getBody(request)
             +"\r\nController: "+handler.getClass().getName()+", Request Type: "+request.getMethod()+", Protocol: "+request.getScheme());
         } catch (Exception e) {
-            logger.info("HandlerInterceptor err: "+e.toString());
+            logger.info("printLog err: "+e.toString());
             e.printStackTrace();
         }
     }
@@ -47,7 +49,11 @@ public class InterceptorUtil {
         String result ="";
         String reqMethod = request.getMethod();
         if("POST".equalsIgnoreCase(reqMethod)){
-            result = request.getRequestURL() +"?"+ getAllPostParam(request);
+        	result = request.getRequestURL().toString();
+        	
+        	String allPara = getAllPostParam(request);
+        	if( StringUtils.isNotEmpty(allPara) )
+        		result += ("?" + allPara);
         }
         if("GET".equalsIgnoreCase(reqMethod)){
             result = request.getQueryString() != null ? 
@@ -55,6 +61,20 @@ public class InterceptorUtil {
                         request.getRequestURL().toString();
         }
         return result;
+    }
+    
+    private static String getBody(HttpServletRequest request){
+    	return "";
+//    	String body = "";
+//    	if( !StringUtils.containsIgnoreCase(request.getContentType(),"json") )
+//    		return "";
+//    	try {
+//			body = IOUtils.toString(request.getReader());
+//		} catch (IOException e) {
+//			logger.info("getBody err: "+e.toString());
+//			e.printStackTrace();
+//		}
+//    	return body;
     }
     
     private static String getAllPostParam(HttpServletRequest request){

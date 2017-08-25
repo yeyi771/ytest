@@ -5,8 +5,19 @@ class PostClass{
 	int i;
 	boolean isMajor;
 	boolean issMajor;
+	String str;
 
-	public boolean isB() {
+	@Override
+    public String toString() {
+        return "PostClass [b=" + b + ", i=" + i + ", isMajor=" + isMajor + ", issMajor=" + issMajor + ", str=" + str + "]";
+    }
+    public String getStr() {
+        return str;
+    }
+    public void setStr(String str) {
+        this.str = str;
+    }
+    public boolean isB() {
 		return b;
 	}
 	public void setB(boolean b) {

@@ -7,10 +7,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.MapUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -140,6 +142,23 @@ public class CtrlGetPost {
 	public @ResponseBody String PostClass(PostClass ps) throws IOException {
 		return "bool: "+ps.b;
 	}
+	
+	// 用流(Json)的方式传（在 body 中）而不是普通的 post
+	@RequestMapping(value = "/postjson", method = RequestMethod.POST)
+    public @ResponseBody String PostJson(@RequestBody PostClass ps) throws IOException {
+        return "PostJson: "+ps;
+    }
+	
+	// 用流(Json)的方式传（在 body 中）而不是普通的 post
+    @RequestMapping(value = "/postmap", method = RequestMethod.POST)
+    public @ResponseBody String PostMap(@RequestBody Map<String, Object> map) throws IOException {
+        return "PostMap: "+MapUtils.getBoolean(map, "b")
+        +"\r\n"+MapUtils.getInteger(map, "i")
+        +"\r\n"+MapUtils.getBoolean(map, "isMajor")
+        +"\r\n"+MapUtils.getBoolean(map, "issMajor")
+        +"\r\n"+MapUtils.getString(map, "str")
+        ;
+    }
 //	@RequestMapping(value = "/postbool", method = RequestMethod.POST)
 //	public @ResponseBody String Postbool(boolean bool, boolean bool2, boolean bool3,
 //			boolean bool4, boolean bool5, boolean bool6) throws IOException {

@@ -35,10 +35,13 @@ public class InterceptorUtil {
             }
         }
         
+        String className = "";
+        if( null!=handler )
+            className = handler.getClass().getName();
+        
         try {
             logger.info("Request Begin, URI:\r\n"+getRequstAddress(request)
-            +"\r\n\r\nbody: "+getBody(request)
-            +"\r\nController: "+handler.getClass().getName()+", Request Type: "+request.getMethod()+", Protocol: "+request.getScheme());
+            +"\r\n\r\nController: "+ className +", Request Type: "+request.getMethod()+", Protocol: "+request.getScheme());
         } catch (Exception e) {
             logger.info("printLog err: "+e.toString());
             e.printStackTrace();
@@ -69,7 +72,7 @@ public class InterceptorUtil {
 //    	if( !StringUtils.containsIgnoreCase(request.getContentType(),"json") )
 //    		return "";
 //    	try {
-//			body = IOUtils.toString(request.getReader());
+//			body = IOUtils.toString(request.getReader()); // getReader 只能读一次,这里读了 Controller 中就无法读取了,要重载 HttpServletRequestWrapper 来解决
 //		} catch (IOException e) {
 //			logger.info("getBody err: "+e.toString());
 //			e.printStackTrace();

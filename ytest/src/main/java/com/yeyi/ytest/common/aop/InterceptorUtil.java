@@ -35,20 +35,22 @@ public class InterceptorUtil {
             }
         }
         
-        String className = "";
+        String handlerName = "";
         if( null!=handler )
-            className = handler.getClass().getName();
-        
+            handlerName = handler.getClass().getName();
         try {
-            logger.info("Request Begin, URI:\r\n"+getRequstAddress(request)
-            +"\r\n\r\nController: "+ className +", Request Type: "+request.getMethod()+", Protocol: "+request.getScheme());
+            logger.info("Request Begin, URI:\r\n\r\n{}"
+                    +"\r\nController: {}"
+                    +", Request Type: {}"
+                    +", Protocol: {}",getRequstAddress(request), handlerName, request.getMethod(),request.getScheme()
+            );
         } catch (Exception e) {
-            logger.info("printLog err: "+e.toString());
+            logger.info("HandlerInterceptor err: "+e.toString());
             e.printStackTrace();
         }
     }
     
-    private static String getRequstAddress(HttpServletRequest request){
+    public static String getRequstAddress(HttpServletRequest request){
         String result ="";
         String reqMethod = request.getMethod();
         if("POST".equalsIgnoreCase(reqMethod)){
@@ -66,8 +68,8 @@ public class InterceptorUtil {
         return result;
     }
     
-    private static String getBody(HttpServletRequest request){
-    	return "";
+//    private static String getBody(HttpServletRequest request){
+//    	return "";
 //    	String body = "";
 //    	if( !StringUtils.containsIgnoreCase(request.getContentType(),"json") )
 //    		return "";
@@ -78,7 +80,7 @@ public class InterceptorUtil {
 //			e.printStackTrace();
 //		}
 //    	return body;
-    }
+//    }
     
     private static String getAllPostParam(HttpServletRequest request){
         @SuppressWarnings("unchecked")

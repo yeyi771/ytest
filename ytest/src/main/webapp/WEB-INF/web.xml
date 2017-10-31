@@ -25,10 +25,14 @@
 	</context-param>
 	 -->
 	
-	<!-- 加载Spring容器配置(上面的contextConfigLocation里指定的xml文件) <aop:config>标签要用
+        <!-- 加载Spring容器配置(上面的contextConfigLocation里指定的xml文件) <aop:config>标签要用 -->
+<!-- 	<listener> -->
+<!-- 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> -->
+<!-- 	</listener> -->
+
+    <!-- 启用 RequestListener 监听器 -->
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		<listener-class>com.yeyi.ytest.DataBase.listener.RequestListener</listener-class>
 	</listener>
-	-->
  
 </web-app>

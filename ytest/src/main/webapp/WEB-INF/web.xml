@@ -18,6 +18,70 @@
     	<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 	
+	<filter>
+    <filter-name>logonFilter</filter-name>
+    <filter-class>
+            com.yeyi.ytest.DataBase.filter.LogonFilter
+        </filter-class>
+    <init-param>
+      <param-name>filterurl</param-name>
+      <param-value>
+                /rest/home/myhome,/rest/shopcart/out
+            </param-value>
+    </init-param>
+    <init-param>
+      <param-name>webViewUrl</param-name>
+      <param-value>
+                /rest/sku/getProductSku,
+                /rest/leaguer/szg,
+                /rest/product/recomendBrand,
+                /rest/shopcart/list,
+                /rest/order/getNoPay,
+                /rest/order/getNoSend,
+                /rest/order/getNoOver,
+                /rest/order/getRefunding,
+                /rest/leaguer/leaguerdata,
+                /rest/order/getAll,
+                /rest/payCard/list,
+                /rest/home/message,
+                /rest/knowledgecard/codecard,
+                /rest/address/list,
+                /rest/home/recommend,
+                /rest/counter/myCounterV6,
+                /rest/home/complaint,
+                /rest/order/logistics,
+                /rest/leaguer/detail,
+                /rest/leaguer/toLogin,
+                /rest/order/detail,
+                /rest/ent/toQualifications,
+                /rest/ent/getGreadeInfo,
+                /rest/ent/toPromise,
+                /rest/ent/getBrand,
+                /rest/shopcart/toEmpty,
+                /rest/ent/getEntStoryProcess,
+                /rest/team/getTeamLeaguerData,
+                /rest/team/getMembersView,
+                /rest/team/toUpdateTeam,
+                /rest/address/add,
+                /rest/address/setupdate,
+                /rest/counter/toWithdraw,
+                /rest/home/messagedetail.html,
+                /rest/payCard/secret.html,
+                /rest/leaguer/toApplyV6,
+                /rest/order/detail,
+                /rest/team/getMembersCheck,
+                /rest/counter/getProceedsV6,
+                /rest/payCard/toActive,
+                /rest/team/toCompetition,
+                /rest/shop/toShopIndex
+            </param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>logonFilter</filter-name>
+    <url-pattern>/rest/*</url-pattern>
+  </filter-mapping>
+	
 	<!-- 设置Spring容器加载配置文件路径  <aop:config>标签要用
 	<context-param>
 		<param-name>contextConfigLocation</param-name>

@@ -14,8 +14,8 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-	
-<!-- 	设置 @ResponseBody 返回的日期格式 -->
+
+	<!-- 设置 @ResponseBody 返回的日期格式 -->
 	<mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
@@ -23,7 +23,9 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-    <bean id="customObjectMapper" class="com.yeyi.ytest.common.CustomObjectMapper"></bean>
+    <bean id="customObjectMapper" class="com.yeyi.ytest.common.DateObjectMapper">
+        <property name="datePatten" value="MM-dd-yyyy"></property>
+    </bean>
 
 	<!-- 此文件主要为了让 json 与 xml 能自动转换(但方式已经过时了) -->
 

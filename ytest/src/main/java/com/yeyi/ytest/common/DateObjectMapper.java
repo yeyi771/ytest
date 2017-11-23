@@ -21,9 +21,15 @@ import org.codehaus.jackson.map.ser.CustomSerializerFactory;
  * @author aokunsang 
  * @date 2013-5-28 
  */  
-public class CustomObjectMapper extends ObjectMapper {  
+public class DateObjectMapper extends ObjectMapper {
+    
+    /**
+     * 要转换的日期格式
+     * 可以从 xml 中配置，也可以从自定义的配置文件中读取
+     */
+    private String datePatten = "yyyy-MM-dd HH:mm:ss";
   
-    public CustomObjectMapper(){  
+    public DateObjectMapper(){  
         CustomSerializerFactory factory = new CustomSerializerFactory();  
         factory.addGenericMapping(Date.class, new JsonSerializer<Date>(){  
             @Override  
@@ -31,10 +37,14 @@ public class CustomObjectMapper extends ObjectMapper {
                     JsonGenerator jsonGenerator,   
                     SerializerProvider provider)  
                     throws IOException, JsonProcessingException {  
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+                SimpleDateFormat sdf = new SimpleDateFormat(datePatten);  
                 jsonGenerator.writeString(sdf.format(value));  
             }  
         });  
         this.setSerializerFactory(factory);  
-    }  
+    }
+
+    public void setDatePatten(String datePatten) {
+        this.datePatten = datePatten;
+    }
 }  

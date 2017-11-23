@@ -1,6 +1,7 @@
 package com.yeyi.ytest;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,15 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.MapUtils;
 import org.codehaus.jackson.map.ObjectMapper;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 // 自测如果这里只写 @RequestMapping("/") 则方法前的  @RequestMapping 可写成  @RequestMapping("/XXX") 也可以写成 @RequestMapping("XXX")
@@ -147,6 +146,11 @@ public class CtrlGetPost {
 	@RequestMapping(value = "/postjson", method = RequestMethod.POST)
     public @ResponseBody String PostJson(@RequestBody PostClass ps) throws IOException {
         return "PostJson: "+ps;
+    }
+	
+	@RequestMapping(value = "/curdate")
+    public @ResponseBody Date curDate() throws IOException {
+        return new Date();
     }
 	
 	// 用流(Json)的方式传（在 body 中）而不是普通的 post

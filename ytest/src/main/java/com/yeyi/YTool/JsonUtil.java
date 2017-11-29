@@ -46,7 +46,7 @@ public class JsonUtil {
      * @param clazz   
      * @return   
      */    
-    public static Object getDTO(String jsonString, Class clazz){     
+    public static <T> Object getDTO(String jsonString, Class<T> clazz){     
         JSONObject jsonObject = null;     
         try{     
             setDataFormat2JAVA();      
@@ -66,7 +66,7 @@ public class JsonUtil {
      * @param map 集合属性的类型 (key : 集合属性名, value : 集合属性类型class) eg: ("beansList" : Bean.class)   
      * @return   
      */    
-    public static Object getDTO(String jsonString, Class clazz, Map map){     
+    public static Object getDTO(String jsonString, Class<?> clazz, Map map){     
         JSONObject jsonObject = null;     
         try{     
             setDataFormat2JAVA();      
@@ -84,7 +84,7 @@ public class JsonUtil {
      * @param clazz   
      * @return   
      */    
-    public static Object[] getDTOArray(String jsonString, Class clazz){     
+    public static Object[] getDTOArray(String jsonString, Class<?> clazz){     
         setDataFormat2JAVA();     
         JSONArray array = JSONArray.fromObject(jsonString);     
         Object[] obj = new Object[array.size()];     
@@ -103,7 +103,7 @@ public class JsonUtil {
      * @param map   
      * @return   
      */    
-    public static Object[] getDTOArray(String jsonString, Class clazz, Map map){     
+    public static Object[] getDTOArray(String jsonString, Class<?> clazz, Map map){     
         setDataFormat2JAVA();     
         JSONArray array = JSONArray.fromObject(jsonString);     
         Object[] obj = new Object[array.size()];     
@@ -120,7 +120,7 @@ public class JsonUtil {
      * @param clazz   
      * @return   
      */    
-    public static List getDTOList(String jsonString, Class clazz){     
+    public static List getDTOList(String jsonString, Class<?> clazz){     
         setDataFormat2JAVA();     
         JSONArray array = JSONArray.fromObject(jsonString);     
         List list = new ArrayList();     
@@ -138,7 +138,7 @@ public class JsonUtil {
      * @param map 集合属性的类型   
      * @return   
      */    
-    public static List getDTOList(String jsonString, Class clazz, Map map){     
+    public static List getDTOList(String jsonString, Class<?> clazz, Map map){     
         setDataFormat2JAVA();     
         JSONArray array = JSONArray.fromObject(jsonString);     
         List list = new ArrayList();     

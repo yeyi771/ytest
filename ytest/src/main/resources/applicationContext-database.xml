@@ -14,7 +14,10 @@
         http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
         http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
         http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
-                      
+        
+    <!-- 引用配置文件中的内容 -->
+    <context:property-placeholder location="classpath:base.properties" ignore-unresolvable="true" />
+
     <!-- 用 @Transactional 控制事务时需要定义 ,默认使用名为 transactionManager 的事务管理器 -->
     <!-- 否则应该用 transaction-manager="XXX" 来表示
 	<tx:annotation-driven />
@@ -29,12 +32,9 @@
 
 		<bean id="dataSourceId" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		    <property name="driverClassName" value="com.mysql.jdbc.Driver" />      
-<!--     		<property name="url" value="jdbc:mysql://192.168.5.117:3307/sit110?characterEncoding=utf-8" />       -->
-<!--     		<property name="username" value="root" />       -->
-<!--     		<property name="password" value="123456" /> -->
-            <property name="url" value="jdbc:mysql://localhost:3306/sit110?characterEncoding=utf-8" />      
-            <property name="username" value="root" />      
-            <property name="password" value="0026888" />
+            <property name="url" value="${spring.datasource.url}" />      
+            <property name="username" value="${spring.datasource.username}" />      
+            <property name="password" value="${spring.datasource.password}" />
 	  	</bean>  
 		
 		

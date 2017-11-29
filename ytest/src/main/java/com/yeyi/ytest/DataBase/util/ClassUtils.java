@@ -27,8 +27,8 @@ public class ClassUtils {
      * Needs to be a WeakHashMap with WeakReferences as values to allow 
      * for proper garbage collection in case of multiple class loaders. 
      */  
-    private static final Map<Class, BeanInfo> classCache = Collections  
-                                                             .synchronizedMap(new WeakHashMap<Class, BeanInfo>());  
+    private static final Map<Class<?>, BeanInfo> classCache = Collections  
+                                                             .synchronizedMap(new WeakHashMap<Class<?>, BeanInfo>());  
   
     /** 
      * 获取类本身的BeanInfo，不包含父类属性 
@@ -46,7 +46,7 @@ public class ClassUtils {
                 // garbage collection on class loader shutdown - we cache it here anyway,  
                 // in a GC-friendly manner. In contrast to CachedIntrospectionResults,  
                 // Introspector does not use WeakReferences as values of its WeakHashMap!  
-                Class classToFlush = clazz;  
+                Class<?> classToFlush = clazz;  
                 do {  
                     Introspector.flushFromCaches(classToFlush);  
                     classToFlush = classToFlush.getSuperclass();  
